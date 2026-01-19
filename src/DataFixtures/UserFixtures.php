@@ -13,8 +13,6 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        echo "Loading UserFixtures...\n";
-
         $client = new User();
         $client->setEmail('client@test.local');
         $client->setName('Test Client');
@@ -30,12 +28,9 @@ class UserFixtures extends Fixture
         $manager->persist($client);
         $manager->persist($managerUser);
 
-        echo "Adding references...\n";
         $this->addReference(self::USER_CLIENT, $client);
         $this->addReference(self::USER_MANAGER, $managerUser);
-        echo "References added: " . self::USER_CLIENT . ", " . self::USER_MANAGER . "\n";
 
         $manager->flush();
-        echo "UserFixtures loaded successfully\n";
     }
 }

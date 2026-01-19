@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Modules\Order\Controller;
 
+use App\Modules\Order\Dto\PriceQueryDto;
 use App\Modules\Order\Service\PriceScraperService;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/v1')]
 class PriceController extends AbstractController
@@ -65,21 +66,14 @@ class PriceController extends AbstractController
         response: 404,
         description: 'Price not found'
     )]
-    public function getPrice(Request $request): JsonResponse
+    public function getPrice(#[MapQueryString] PriceQueryDto $queryDto): JsonResponse
     {
-        //todo: add validation
-        $factory = $request->query->get('factory');
-        $collection = $request->query->get('collection');
-        $article = $request->query->get('article');
-
-        if (!$factory || !$collection || !$article) {
-            return $this->json([
-                'error' => 'Missing required parameters: factory, collection, article'
-            ], 400);
-        }
-
         try {
-            $price = $this->priceScraperService->getPrice($factory, $collection, $article);
+            $price = $this->priceScraperService->getPrice(
+                factory: $queryDto->factory,
+                collection: $queryDto->collection,
+                article: $queryDto->article,
+            );
 
             if ($price === null) {
                 return $this->json([
@@ -89,9 +83,9 @@ class PriceController extends AbstractController
 
             return $this->json([
                 'price' => $price,
-                'factory' => $factory,
-                'collection' => $collection,
-                'article' => $article
+                'factory' => $queryDto->factory,
+                'collection' => $queryDto->collection,
+                'article' => $queryDto->article,
             ]);
         } catch (\Exception $e) {
             return $this->json([
