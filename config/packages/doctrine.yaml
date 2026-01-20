@@ -32,11 +32,18 @@ doctrine:
                 alias: Order
                 type: attribute
 
-            Common:
+            Article:
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Modules/Common/Entity'
-                prefix: 'App\Modules\Common\Entity'
-                alias: Common
+                dir: '%kernel.project_dir%/src/Modules/Article/Entity'
+                prefix: 'App\Modules\Article\Entity'
+                alias: Article
+                type: attribute
+
+            Country:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Modules/Country/Entity'
+                prefix: 'App\Modules\Country\Entity'
+                alias: Country
                 type: attribute
         controller_resolver:
             auto_mapping: false

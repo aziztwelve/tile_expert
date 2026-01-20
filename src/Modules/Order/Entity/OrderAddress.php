@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Order\Entity;
 
-use App\Modules\Common\Entity\Country;
+use App\Modules\Country\Entity\Country;
 use App\Modules\Order\Repository\OrderAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
 

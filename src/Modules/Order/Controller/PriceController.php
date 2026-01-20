@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Modules\Order\Controller;
 
 use App\Modules\Order\Dto\PriceQueryDto;
-use App\Modules\Order\Service\PriceScraperService;
+use App\Modules\Order\Service\Interface\PriceProviderInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class PriceController extends AbstractController
 {
     public function __construct(
-        private readonly PriceScraperService $priceScraperService
+        private readonly PriceProviderInterface $priceProvider
     ) {}
 
     #[Route('/price', name: 'api_price_get', methods: ['GET'])]
@@ -69,7 +69,7 @@ class PriceController extends AbstractController
     public function getPrice(#[MapQueryString] PriceQueryDto $queryDto): JsonResponse
     {
         try {
-            $price = $this->priceScraperService->getPrice(
+            $price = $this->priceProvider->getPrice(
                 factory: $queryDto->factory,
                 collection: $queryDto->collection,
                 article: $queryDto->article,

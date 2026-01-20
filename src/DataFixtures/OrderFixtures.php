@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
-use App\Modules\Common\Entity\Article;
-use App\Modules\Common\Entity\Country;
+use App\Modules\Article\Entity\Article;
+use App\Modules\Country\Entity\Country;
 use App\Modules\Order\Entity\Order;
 use App\Modules\Order\Entity\OrderAddress;
 use App\Modules\Order\Entity\OrderCarrier;

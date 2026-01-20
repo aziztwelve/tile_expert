@@ -7,6 +7,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    tile_expert.base_url: '%env(TILE_EXPERT_BASE_URL)%'
 
 services:
     # default configuration for services in *this* file
@@ -26,6 +27,12 @@ services:
         arguments:
             $manticoreHost: '%env(MANTICORE_HOST)%'
             $manticorePort: '%env(int:MANTICORE_PORT)%'
+
+    App\Modules\Order\Service\TileExpertPriceScraperService:
+        arguments:
+            $tileExpertBaseUrl: '%tile_expert.base_url%'
+    App\Modules\Order\Service\Interface:
+        alias: App\Modules\Order\Service\TileExpertPriceScraperService
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

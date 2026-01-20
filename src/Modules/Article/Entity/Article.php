@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Modules\Common\Entity;
+namespace App\Modules\Article\Entity;
 
-use App\Modules\Common\Repository\ArticleRepository;
+use App\Modules\Article\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Modules\Order\Entity;
 
-use App\Modules\Common\Entity\Article;
+use App\Modules\Article\Entity\Article;
 use App\Modules\Order\Repository\OrderItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 

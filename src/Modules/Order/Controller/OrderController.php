@@ -7,7 +7,6 @@ namespace App\Modules\Order\Controller;
 use App\Modules\Order\Dto\CreateOrderDto;
 use App\Modules\Order\Dto\OrderStatsQueryDto;
 use App\Modules\Order\Entity\Order;
-use App\Modules\Order\Exception\ArticleNotFoundException;
 use App\Modules\Order\OpenApi\CreateOrderRequest;
 use App\Modules\Order\OpenApi\CreateOrderResponse;
 use App\Modules\Order\OpenApi\ErrorResponse;
@@ -225,31 +224,17 @@ class OrderController extends AbstractController
         #[MapRequestPayload] CreateOrderDto $createOrderDto,
         OrderCreationService $orderCreationService
     ): JsonResponse {
-        try {
-            $order = $orderCreationService->createOrder($createOrderDto);
+        $order = $orderCreationService->createOrder($createOrderDto);
 
-            return $this->json([
-                'status' => 'success',
-                'data' => [
-                    'id' => $order->getId(),
-                    'hash' => $order->getHash(),
-                    'status' => $order->getStatus()->label(),
-                    'number' => $order->getNumber(),
-                    'name' => $order->getName()
-                ]
-            ], 201);
-
-        } catch (ArticleNotFoundException $e) {
-            return $this->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], 404);
-
-        } catch (\Exception $e) {
-            return $this->json([
-                'status' => 'error',
-                'message' => 'An error occurred while creating the order'
-            ], 500);
-        }
+        return $this->json([
+            'status' => 'success',
+            'data' => [
+                'id' => $order->getId(),
+                'hash' => $order->getHash(),
+                'status' => $order->getStatus()->label(),
+                'number' => $order->getNumber(),
+                'name' => $order->getName()
+            ]
+        ], 201);
     }
 }

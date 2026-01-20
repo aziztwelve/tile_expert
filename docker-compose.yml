@@ -1,15 +1,9 @@
-version: '3.8'
-
 services:
-
     app:
         build:
             context: .
             dockerfile: ./docker/local/php-fpm/Dockerfile
         container_name: tile_api
-        working_dir: /var/www/html
-        expose:
-            - "8000"
         environment:
             - APP_ENV=${APP_ENV:-prod}
             - APP_SECRET=${APP_SECRET:-changeme}
@@ -37,7 +31,6 @@ services:
             - "${POSTGRES_PORT:-5432}:5432"
         volumes:
             - postgres_data:/var/lib/postgresql/data
-            - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql
         healthcheck:
             test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
             interval: 5s
@@ -47,11 +40,11 @@ services:
             - tile_network
 
     manticore:
-        image: manticoresearch/manticore:latest
+        image: manticoresearch/manticore:15.1.0
         container_name: tile_manticore
         ports:
             - "${MANTICORE_PORT:-9308}:9308"
-            - "9306:9306"
+            - "${MANTICORE_SQL_PORT:-9306}:9306"
         volumes:
             - manticore_data:/var/lib/manticore
             - ./manticore/manticore.conf:/etc/manticoresearch/manticore.conf

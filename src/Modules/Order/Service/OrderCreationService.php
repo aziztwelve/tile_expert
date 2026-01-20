@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Modules\Order\Service;
 
-use App\Modules\Common\Repository\ArticleRepository;
-use App\Modules\Common\Repository\CountryRepository;
+use App\Modules\Article\Repository\ArticleRepository;
+use App\Modules\Country\Repository\CountryRepository;
 use App\Modules\Order\Dto\CreateOrderDto;
 use App\Modules\Order\Entity\Order;
 use App\Modules\Order\Entity\OrderAddress;

@@ -10,10 +10,6 @@ order:
     resource: ../../src/Modules/Order/Controller/
     type: attribute
 
-common:
-    resource: ../../src/Modules/Common/Controller/
-    type: attribute
-
 user:
     resource: ../../src/Modules/User/Controller/
     type: attribute
