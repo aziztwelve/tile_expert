@@ -10,8 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderCarrier
 {
     #[ORM\Id]
-    #[ORM\OneToOne]
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'bigint')]
+    private ?int $id = null;
+
+    #[ORM\OneToOne(targetEntity: Order::class, inversedBy: 'carrier')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Order $order;
 
     #[ORM\Column(length: 100, nullable: true)]
@@ -19,6 +23,18 @@ class OrderCarrier
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $contactData = null;
+
+    public function __construct(Order $order)
+    {
+        $this->order = $order;
+
+        $order->setCarrier($this);
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getOrder(): Order
     {

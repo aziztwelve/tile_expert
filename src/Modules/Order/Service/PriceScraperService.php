@@ -22,6 +22,8 @@ readonly class PriceScraperService
             $article
         );
 
+        //dd($url);
+
         try {
             $response = $this->httpClient->request('GET', $url, [
                 'headers' => [

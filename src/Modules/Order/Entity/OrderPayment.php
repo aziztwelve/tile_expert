@@ -10,8 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderPayment
 {
     #[ORM\Id]
-    #[ORM\OneToOne]
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'bigint')]
+    private ?int $id = null;
+
+    #[ORM\OneToOne(targetEntity: Order::class, inversedBy: 'payment')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Order $order;
 
     #[ORM\Column(type: 'smallint')]
@@ -22,6 +26,18 @@ class OrderPayment
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 4)]
     private string $curRate = '1';
+
+    public function __construct(Order $order)
+    {
+        $this->order  = $order;
+
+        $order->setPayment($this);
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getOrder(): Order
     {

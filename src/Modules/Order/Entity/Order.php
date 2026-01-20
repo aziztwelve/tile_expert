@@ -28,10 +28,6 @@ class Order
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
-    private ?User $user = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private ?User $manager = null;
 
     #[ORM\Column(enumType: OrderStatus::class)]
@@ -63,11 +59,41 @@ class Order
 
     #[ORM\OneToMany(mappedBy: 'order', targetEntity: OrderItem::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $items;
+    #[ORM\OneToMany(
+        targetEntity: OrderAddress::class,
+        mappedBy: 'order',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )]
+    private Collection $addresses;
+    #[ORM\OneToOne(
+        targetEntity: OrderDelivery::class,
+        mappedBy: 'order',
+        cascade: ['persist'],
+        orphanRemoval: true
+    )]
+    private ?OrderDelivery $delivery = null;
+
+    #[ORM\OneToOne(
+        targetEntity: OrderPayment::class,
+        mappedBy: 'order',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private ?OrderPayment $payment = null;
+
+    #[ORM\OneToOne(
+        targetEntity: OrderCarrier::class,
+        mappedBy: 'order',
+        cascade: ['persist', 'remove']
+    )]
+    private ?OrderCarrier $carrier = null;
 
     public function __construct()
     {
         $this->items = new ArrayCollection();
         $this->createdAt = new \DateTimeImmutable();
+        $this->addresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -94,17 +120,6 @@ class Order
     public function setNumber(?string $number): self
     {
         $this->number = $number;
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
         return $this;
     }
 
@@ -244,4 +259,60 @@ class Order
         }
         return $this;
     }
+
+
+    /**
+     * @return Collection<int, OrderAddress>
+     */
+    public function getAddresses(): Collection
+    {
+        return $this->addresses;
+    }
+
+    public function addAddress(OrderAddress $address): self
+    {
+        if (!$this->addresses->contains($address)) {
+            $this->addresses->add($address);
+            $address->setOrder($this);
+        }
+
+        return $this;
+    }
+
+    public function getDelivery(): ?OrderDelivery
+    {
+        return $this->delivery;
+    }
+
+    public function setDelivery(?OrderDelivery $delivery): self
+    {
+        $this->delivery = $delivery;
+
+        return $this;
+    }
+
+    public function getPayment(): ?OrderPayment
+    {
+        return $this->payment;
+    }
+
+    public function setPayment(?OrderPayment $payment): self
+    {
+        $this->payment = $payment;
+
+        return $this;
+    }
+
+    public function getCarrier(): ?OrderCarrier
+    {
+        return $this->carrier;
+    }
+
+    public function setCarrier(?OrderCarrier $carrier): self
+    {
+        $this->carrier = $carrier;
+
+        return $this;
+    }
+
 }

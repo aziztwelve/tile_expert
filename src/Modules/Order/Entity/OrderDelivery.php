@@ -10,8 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
 class OrderDelivery
 {
     #[ORM\Id]
-    #[ORM\OneToOne]
-    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'bigint')]
+    private ?int $id = null;
+
+    #[ORM\OneToOne(targetEntity: Order::class, inversedBy: 'delivery')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Order $order;
 
     #[ORM\Column(type: 'smallint')]
@@ -22,6 +26,17 @@ class OrderDelivery
 
     #[ORM\Column(type: 'json', nullable: true)]
     private ?array $warehouseData = null;
+
+    public function __construct(Order $order)
+    {
+        $this->order = $order;
+        $order->setDelivery($this);
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getOrder(): Order
     {

@@ -4,7 +4,7 @@ namespace App\Modules\Order\Dto;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class OrderStatsQuery
+final readonly class OrderStatsQueryDto
 {
     public function __construct(
         #[Assert\Choice(choices: ['day', 'month', 'year'])]
