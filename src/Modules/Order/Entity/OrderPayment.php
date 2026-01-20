@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Order\Entity;
 
 use App\Modules\Order\Repository\OrderPaymentRepository;

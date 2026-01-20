@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Modules\Common\Entity\Article;
@@ -23,7 +25,6 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         $order = new Order();
         $order->setHash(md5(uniqid('', true)));
         $order->setNumber('ORD-0001');
-        $order->setUser($this->getReference(UserFixtures::USER_CLIENT, User::class));
         $order->setManager($this->getReference(UserFixtures::USER_MANAGER, User::class));
         $order->setStatus(OrderStatus::NEW);
         $order->setLocale('de');
@@ -53,18 +54,15 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface
         $address->setCity('Berlin');
         $address->setAddress('Alexanderplatz 1');
 
-        $delivery = new OrderDelivery();
-        $delivery->setOrder($order);
+        $delivery = new OrderDelivery($order);
         $delivery->setType(0);
         $delivery->setPrice('120.00');
 
-        $payment = new OrderPayment();
-        $payment->setOrder($order);
+        $payment = new OrderPayment($order);
         $payment->setPayType(1);
         $payment->setCurRate('1.0000');
 
-        $carrier = new OrderCarrier();
-        $carrier->setOrder($order);
+        $carrier = new OrderCarrier($order);
         $carrier->setName('DHL');
         $carrier->setContactData('support@dhl.com');
 

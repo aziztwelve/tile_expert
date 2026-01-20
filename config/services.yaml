@@ -22,7 +22,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Kernel.php'
             - '../src/Tests/'
-    App\Modules\Order\Service\ManticoreSearchService:
+    App\Modules\Search\Service\ManticoreSearchOrderService:
         arguments:
             $manticoreHost: '%env(MANTICORE_HOST)%'
             $manticorePort: '%env(int:MANTICORE_PORT)%'

@@ -21,7 +21,8 @@ final class Version20260119062804 extends AbstractMigration
     {
         $this->addSql("
             CREATE TABLE order_carrier (
-                order_id BIGINT PRIMARY KEY,
+                id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                order_id BIGINT NOT NULL,
                 name VARCHAR(100) DEFAULT NULL,
                 contact_data VARCHAR(255) DEFAULT NULL
             )

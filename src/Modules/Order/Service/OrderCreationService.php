@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Order\Service;
 
 use App\Modules\Common\Repository\ArticleRepository;
@@ -12,9 +14,11 @@ use App\Modules\Order\Entity\OrderDelivery;
 use App\Modules\Order\Entity\OrderItem;
 use App\Modules\Order\Entity\OrderPayment;
 use App\Modules\Order\Enum\OrderStatus;
+use App\Modules\Order\Event\OrderCreatedEvent;
 use App\Modules\Order\Exception\ArticleNotFoundException;
 use App\Modules\Order\Repository\OrderRepository;
 use App\Modules\User\Repository\UserRepository;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 readonly class OrderCreationService
 {
@@ -22,7 +26,8 @@ readonly class OrderCreationService
         private OrderRepository   $orderRepository,
         private ArticleRepository $articleRepository,
         private CountryRepository $countryRepository,
-        private UserRepository    $userRepository
+        private UserRepository    $userRepository,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -46,6 +51,11 @@ readonly class OrderCreationService
         $this->setPayment($order, $dto->payment);
 
         $this->orderRepository->save($order, true);
+
+        $this->eventDispatcher->dispatch(
+            new OrderCreatedEvent($order),
+            OrderCreatedEvent::NAME
+        );
 
         return $order;
     }

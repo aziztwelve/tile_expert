@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Modules\Common\Entity;
 
 use App\Modules\Common\Repository\ArticleRepository;

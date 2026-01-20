@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Order\OpenApi;
+declare(strict_types=1);
 
 namespace App\Modules\Order\OpenApi;
 

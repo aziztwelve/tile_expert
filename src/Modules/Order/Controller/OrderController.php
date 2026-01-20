@@ -4,44 +4,29 @@ declare(strict_types=1);
 
 namespace App\Modules\Order\Controller;
 
-use App\Modules\Common\Repository\ArticleRepository;
-use App\Modules\Common\Repository\CountryRepository;
 use App\Modules\Order\Dto\CreateOrderDto;
 use App\Modules\Order\Dto\OrderStatsQueryDto;
 use App\Modules\Order\Entity\Order;
-use App\Modules\Order\Entity\OrderAddress;
-use App\Modules\Order\Entity\OrderCarrier;
-use App\Modules\Order\Entity\OrderDelivery;
-use App\Modules\Order\Entity\OrderItem;
-use App\Modules\Order\Entity\OrderPayment;
-use App\Modules\Order\Enum\OrderStatus;
 use App\Modules\Order\Exception\ArticleNotFoundException;
-use App\Modules\Order\Exception\CountryNotFoundException;
 use App\Modules\Order\OpenApi\CreateOrderRequest;
 use App\Modules\Order\OpenApi\CreateOrderResponse;
 use App\Modules\Order\OpenApi\ErrorResponse;
 use App\Modules\Order\OpenApi\OrderResponse;
 use App\Modules\Order\Repository\OrderRepository;
-use App\Modules\Order\Service\ManticoreSearchService;
 use App\Modules\Order\Service\OrderCreationService;
-use App\Modules\User\Entity\User;
-use App\Modules\User\Repository\UserRepository;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/api/v1/orders')]
 class OrderController extends AbstractController
 {
     public function __construct(
         private readonly OrderRepository $orderRepository,
-        private readonly ManticoreSearchService $manticoreService
     ) {}
 
     #[Route('/stats', name: 'api_orders_stats', methods: ['GET'])]
@@ -72,7 +57,7 @@ class OrderController extends AbstractController
     #[Route('/stats', name: 'api_orders_stats', methods: ['GET'])]
     public function stats(
         #[MapQueryString] OrderStatsQueryDto $query,
-        OrderRepository                      $orderRepository
+        OrderRepository $orderRepository
     ): JsonResponse {
         $result = $orderRepository->getGroupedStats(
             group: $query->group,
@@ -264,52 +249,6 @@ class OrderController extends AbstractController
             return $this->json([
                 'status' => 'error',
                 'message' => 'An error occurred while creating the order'
-            ], 500);
-        }
-    }
-
-    #[Route('/search', name: 'api_orders_search', methods: ['GET'])]
-    #[OA\Get(
-        path: '/api/v1/orders/search',
-        summary: 'Search orders using Manticore Search',
-        tags: ['Orders']
-    )]
-    #[OA\Parameter(
-        name: 'q',
-        description: 'Search query',
-        in: 'query',
-        required: true,
-        example: 'Baltic'
-    )]
-    #[OA\Parameter(
-        name: 'page',
-        in: 'query',
-        schema: new OA\Schema(type: 'integer', default: 1),
-        example: 1
-    )]
-    #[OA\Parameter(
-        name: 'page_size',
-        in: 'query',
-        schema: new OA\Schema(type: 'integer', default: 10),
-        example: 10
-    )]
-    public function search(Request $request): JsonResponse
-    {
-        $query = $request->query->get('q');
-        $page = max(1, (int)$request->query->get('page', 1));
-        $pageSize = max(1, min(100, (int)$request->query->get('page_size', 10)));
-
-        if (!$query) {
-            return $this->json(['error' => 'Missing search query parameter: q'], 400);
-        }
-
-        try {
-            $results = $this->manticoreService->search($query, $page, $pageSize);
-            return $this->json($results);
-        } catch (\Exception $e) {
-            return $this->json([
-                'error' => 'Search failed',
-                'message' => $e->getMessage()
             ], 500);
         }
     }

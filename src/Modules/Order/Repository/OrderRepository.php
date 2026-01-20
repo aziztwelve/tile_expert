@@ -73,7 +73,6 @@ class OrderRepository extends ServiceEntityRepository
             ->leftJoin('o.delivery', 'd')->addSelect('d')
             ->leftJoin('o.payment', 'p')->addSelect('p')
             ->leftJoin('o.carrier', 'cr')->addSelect('cr')
-            ->leftJoin('o.user', 'u')->addSelect('u')
             ->leftJoin('o.manager', 'm')->addSelect('m')
             ->andWhere('o.id = :id')
             ->setParameter('id', $id)
@@ -89,7 +88,6 @@ class OrderRepository extends ServiceEntityRepository
 
     public function save(Order $order): void
     {
-//        dd($order);
         $this->getEntityManager()->persist($order);
         $this->getEntityManager()->flush();
     }

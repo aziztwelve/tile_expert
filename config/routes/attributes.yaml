@@ -17,3 +17,7 @@ common:
 user:
     resource: ../../src/Modules/User/Controller/
     type: attribute
+
+search:
+    resource: ../../src/Modules/Search/Controller/
+    type: attribute

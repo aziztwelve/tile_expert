@@ -21,7 +21,8 @@ final class Version20260119062630 extends AbstractMigration
     {
         $this->addSql("
             CREATE TABLE order_payment (
-                order_id BIGINT PRIMARY KEY,
+                id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                order_id BIGINT NOT NULL,
                 pay_type SMALLINT NOT NULL,
                 vat_type SMALLINT NOT NULL DEFAULT 0,
                 vat_number VARCHAR(100) DEFAULT NULL,
