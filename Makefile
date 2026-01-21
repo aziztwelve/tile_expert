@@ -40,6 +40,11 @@ exec-db: ## Exec db container
 test: ## Run tests
 	docker compose exec app php bin/phpunit
 
+test-db-setup: #Setup test db
+	php bin/console doctrine:database:create --env=test
+	php bin/console doctrine:migrations:migrate --no-interaction --env=test
+	php bin/console doctrine:fixtures:load --no-interaction --env=test
+
 test-coverage: ## Run tests with coverage
 	docker compose exec app php bin/phpunit --coverage-html coverage
 
