@@ -17,3 +17,7 @@ user:
 search:
     resource: ../../src/Modules/Search/Controller/
     type: attribute
+
+pricing:
+    resource: ../../src/Modules/Pricing/Controller/
+    type: attribute

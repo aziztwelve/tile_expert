@@ -4,6 +4,7 @@ services:
             context: .
             dockerfile: ./docker/local/php-fpm/Dockerfile
         container_name: tile_api
+        working_dir: /var/www/html
         environment:
             - APP_ENV=${APP_ENV:-prod}
             - APP_SECRET=${APP_SECRET:-changeme}

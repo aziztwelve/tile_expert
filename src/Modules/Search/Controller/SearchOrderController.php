@@ -98,27 +98,20 @@ class SearchOrderController extends AbstractController
     )]
     public function searchOrders(Request $request): JsonResponse
     {
-        try {
-            $query = $request->query->get('q');
-            $status = $request->query->get('status');
-            $currency = $request->query->get('currency');
-            $limit = $request->query->getInt('limit', 20);
-            $offset = $request->query->getInt('offset', 0);
+        $query = $request->query->get('q');
+        $status = $request->query->get('status');
+        $currency = $request->query->get('currency');
+        $limit = $request->query->getInt('limit', 20);
+        $offset = $request->query->getInt('offset', 0);
 
-            $response = $this->searchService->advancedSearch(
-                query: $query,
-                status: $status,
-                currency: $currency,
-                limit: $limit,
-                offset: $offset
-            );
+        $response = $this->searchService->advancedSearch(
+            query: $query,
+            status: $status,
+            currency: $currency,
+            limit: $limit,
+            offset: $offset
+        );
 
-            return $this->json($response);
-        } catch (\Exception $e) {
-            return $this->json([
-                'status' => 'error',
-                'message' => 'Search failed: ' . $e->getMessage()
-            ], 500);
-        }
+        return $this->json($response);
     }
 }

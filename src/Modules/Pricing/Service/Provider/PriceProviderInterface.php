@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Modules\Order\Service\Interface;
+namespace App\Modules\Pricing\Service\Provider;
 
 interface PriceProviderInterface
 {

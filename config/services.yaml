@@ -28,11 +28,11 @@ services:
             $manticoreHost: '%env(MANTICORE_HOST)%'
             $manticorePort: '%env(int:MANTICORE_PORT)%'
 
-    App\Modules\Order\Service\TileExpertPriceScraperService:
+    App\Modules\Pricing\Service\Provider\TileExpertPriceScraperService:
         arguments:
             $tileExpertBaseUrl: '%tile_expert.base_url%'
-    App\Modules\Order\Service\Interface:
-        alias: App\Modules\Order\Service\TileExpertPriceScraperService
+    App\Modules\Pricing\Service\Provider:
+        alias: App\Modules\Pricing\Service\Provider\TileExpertPriceScraperService
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

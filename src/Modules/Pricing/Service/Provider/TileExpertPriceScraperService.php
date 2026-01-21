@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Modules\Order\Service;
+namespace App\Modules\Pricing\Service\Provider;
 
-use App\Modules\Order\Service\Interface\PriceProviderInterface;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 

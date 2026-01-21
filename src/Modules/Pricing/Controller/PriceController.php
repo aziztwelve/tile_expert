@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Modules\Order\Controller;
+namespace App\Modules\Pricing\Controller;
 
 use App\Modules\Order\Dto\PriceQueryDto;
-use App\Modules\Order\Service\Interface\PriceProviderInterface;
+use App\Modules\Pricing\Service\Provider\PriceProviderInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

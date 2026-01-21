@@ -56,7 +56,6 @@ class ManticoreSearchOrderService
 
     /**
      * Полнотекстовый поиск с фильтрами
-     * @throws \Exception
      */
     public function advancedSearch(
         ?string $query = null,
