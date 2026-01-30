@@ -38,15 +38,15 @@ exec-db: ## Exec db container
 	docker compose exec db
 
 test: ## Run tests
-	docker compose exec app php bin/phpunit
+	docker compose exec -e APP_ENV=test app php bin/phpunit
 
 test-db-setup: #Setup test db
-	php bin/console doctrine:database:create --env=test
-	php bin/console doctrine:migrations:migrate --no-interaction --env=test
-	php bin/console doctrine:fixtures:load --no-interaction --env=test
+	docker compose exec -e APP_ENV=test app php bin/console doctrine:database:create
+	docker compose exec -e APP_ENV=test app php bin/console doctrine:migrations:migrate --no-interaction
+	docker compose exec -e APP_ENV=test app php bin/console doctrine:fixtures:load --no-interaction
 
 test-coverage: ## Run tests with coverage
-	docker compose exec app php bin/phpunit --coverage-html coverage
+	docker compose exec -e APP_ENV=test app php bin/phpunit --coverage-html coverage
 
 migrate: ## Run database migrations
 	docker compose exec app php bin/console doctrine:migrations:migrate --no-interaction
